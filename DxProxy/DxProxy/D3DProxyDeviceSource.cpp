@@ -37,16 +37,6 @@ void D3DProxyDeviceSource::Init(ProxyHelper::ProxyConfig& cfg)
 
 HRESULT WINAPI D3DProxyDeviceSource::EndScene()
 {
-	// delay to avoid crashing on start
-	static int initDelay = 120;
-	initDelay--;
-
-	if(!stereoView->initialized && initDelay < 0)
-	{
-		stereoView->Init(m_pDevice);
-		SetupMatrices();
-	}
-
 	HandleControls();
 	HandleTracking();
 	ComputeViewTranslation();

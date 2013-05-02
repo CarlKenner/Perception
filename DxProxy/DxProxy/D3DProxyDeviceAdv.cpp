@@ -57,16 +57,6 @@ HRESULT WINAPI D3DProxyDeviceAdv::BeginScene()
 
 HRESULT WINAPI D3DProxyDeviceAdv::EndScene()
 {
-	// delay to avoid crashing on start
-	static int initDelay = 120;
-	initDelay--;
-
-	if(!stereoView->initialized && initDelay < 0)
-	{
-		stereoView->Init(m_pDevice);
-		SetupMatrices();
-	}
-
 	return D3DProxyDevice::EndScene();
 }
 

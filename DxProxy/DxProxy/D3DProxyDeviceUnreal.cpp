@@ -46,16 +46,6 @@ HRESULT WINAPI D3DProxyDeviceUnreal::BeginScene()
 
 HRESULT WINAPI D3DProxyDeviceUnreal::EndScene()
 {
-	// delay to avoid crashing on start
-	static int initDelay = 120;
-	initDelay--;
-
-	if(!stereoView->initialized && initDelay < 0)
-	{
-		stereoView->Init(m_pDevice);
-		SetupMatrices();
-	}
-
 	HandleControls();
 	HandleTracking();
 	ComputeViewTranslation();

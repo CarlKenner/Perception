@@ -432,11 +432,9 @@ void D3DProxyDevice::HandleControls()
 	if(doSaveNext && saveWaitCount < 0)
 	{
 		doSaveNext = false;
-		ProxyHelper* helper = new ProxyHelper();
-		helper->SaveProfile(separation, convergence, swap_eyes, yaw_multiplier, pitch_multiplier, roll_multiplier);
-		helper->SaveUserConfig(centerlineL, centerlineR);
+		proxy_helper.SaveProfile(separation, convergence, swap_eyes, yaw_multiplier, pitch_multiplier, roll_multiplier);
+		proxy_helper.SaveUserConfig(centerlineL, centerlineR);
 	}
-
 }
 
 void D3DProxyDevice::HandleTracking()
@@ -487,6 +485,16 @@ void ClearHLine(LPDIRECT3DDEVICE9 Device_Interface,int x1,int y1,int x2,int y2,i
 
 HRESULT WINAPI D3DProxyDevice::EndScene()
 {
+	// delay to avoid crashing on start
+	static int initDelay = 120;
+	initDelay--;
+
+	if(!stereoView->initialized && initDelay < 0)
+	{
+		stereoView->Init(m_pDevice);
+		SetupMatrices();
+	}
+
 ///// hud text
 	if(hudFont == NULL)
 		SetupText();
